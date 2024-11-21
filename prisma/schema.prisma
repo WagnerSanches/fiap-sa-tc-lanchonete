@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model client {
+  id_client Int     @id @default(autoincrement())
+  document  String  @unique @db.VarChar(11)
+  email     String? @db.VarChar(100)
+  name      String? @db.VarChar(100)
+}
+
+model item {
+  id_item      Int          @id @default(autoincrement())
+  name         String       @db.VarChar(255)
+  description  String?
+  type         String?      @db.VarChar(20)
+  cooking_time DateTime     @db.Time(6)
+  price        Decimal?     @db.Decimal(5, 2)
+  orderitems   orderitems[]
+}
+
+model orderitems {
+  id_order Int
+  id_item  Int
+  item     item   @relation(fields: [id_item], references: [id_item], onDelete: NoAction, onUpdate: NoAction, map: "fk_item")
+  orders   orders @relation(fields: [id_order], references: [id_order], onDelete: NoAction, onUpdate: NoAction, map: "fk_order")
+
+  @@id([id_order, id_item])
+}
+
+model orders {
+  id_order       Int          @id @default(autoincrement())
+  id_payment     Int
+  status         String?      @db.VarChar(20)
+  document       String?      @db.VarChar(11)
+  price          Decimal?     @db.Decimal(5, 2)
+  quantity_items Int?
+  created_at     DateTime?    @default(now()) @db.Timestamp(6)
+  updated_at     DateTime?    @default(now()) @db.Timestamp(6)
+  items          orderitems[]
+  payment        payment      @relation(fields: [id_payment], references: [id_payment], onDelete: NoAction, onUpdate: NoAction, map: "fk_payment")
+}
+
+model payment {
+  id_payment Int       @id @default(autoincrement())
+  status     String?   @db.VarChar(20)
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  updated_at DateTime? @default(now()) @db.Timestamp(6)
+  orders     orders[]
+}
