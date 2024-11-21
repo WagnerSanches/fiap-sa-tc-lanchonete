@@ -28,5 +28,41 @@ export class OrderRepositoryPrisma implements OrderRepository {
               },
         });
     }
+
+    findById(id_order: number): Promise<Order> {
+        return this.prisma.orders.findUnique({
+            where: {
+                id_order: id_order
+            },
+            select: {
+                id_order:true,
+                payment: {
+                    select: {
+                        id_payment: true
+                    }
+                },
+                status:true,
+                document:true,
+                price:true,
+                quantity_items:true,
+                items: {
+                    select: {
+                        item: {
+                            select: {
+                                id_item: true,
+                                name: true,
+                                description: true,
+                                type: true,
+                                cooking_time: true,
+                                price: true,
+                            }
+                        }
+                    }
+                },
+                created_at: true,
+                updated_at: true,
+            },
+        })
+    }
 }
   
