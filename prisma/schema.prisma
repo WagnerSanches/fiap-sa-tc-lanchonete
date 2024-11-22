@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
 }
 
 datasource db {
@@ -15,41 +16,56 @@ model client {
 }
 
 model item {
-  id_item      Int          @id @default(autoincrement())
-  name         String       @db.VarChar(255)
-  description  String?
-  type         String?      @db.VarChar(20)
-  cooking_time DateTime     @db.Time(6)
-  price        Decimal?     @db.Decimal(5, 2)
-  orderitems   orderitems[]
+  id_item       Int          @id @default(autoincrement())
+  name          String       @db.VarChar(255)
+  description   String?
+  type          String?      @db.VarChar(20)
+  cook_time_min Int
+  price         Decimal?     @db.Decimal(5, 2)
+  orderitems    orderitems[]
 }
 
 model orderitems {
   id_order Int
   id_item  Int
+  quantity Int
   item     item   @relation(fields: [id_item], references: [id_item], onDelete: NoAction, onUpdate: NoAction, map: "fk_item")
   orders   orders @relation(fields: [id_order], references: [id_order], onDelete: NoAction, onUpdate: NoAction, map: "fk_order")
 
-  @@id([id_order, id_item])
+  @@id([id_order, id_item, quantity])
 }
 
 model orders {
-  id_order       Int          @id @default(autoincrement())
-  id_payment     Int
-  status         String?      @db.VarChar(20)
-  document       String?      @db.VarChar(11)
-  price          Decimal?     @db.Decimal(5, 2)
-  quantity_items Int?
-  created_at     DateTime?    @default(now()) @db.Timestamp(6)
-  updated_at     DateTime?    @default(now()) @db.Timestamp(6)
-  items          orderitems[]
-  payment        payment      @relation(fields: [id_payment], references: [id_payment], onDelete: NoAction, onUpdate: NoAction, map: "fk_payment")
+  id_order         Int          @id @default(autoincrement())
+  document         String?      @db.VarChar(11)
+  price            Decimal?     @db.Decimal(5, 2)
+  preparation_time String?      @db.VarChar(15)
+  created_at       DateTime?    @default(now()) @db.Timestamp(6)
+  items            orderitems[]
+  orderstatus      orderstatus?
+  payment          payment?
+}
+
+model orderstatus {
+  id_order_status Int       @id @default(autoincrement())
+  id_order        Int       @unique
+  id_status       Int?
+  updated_at      DateTime? @default(now()) @db.Timestamp(6)
+  status          status?   @relation(fields: [id_status], references: [id_status], onDelete: NoAction, onUpdate: NoAction, map: "fk_status")
+  orders          orders    @relation(fields: [id_order], references: [id_order], onDelete: NoAction, onUpdate: NoAction, map: "fk_order_status")
 }
 
 model payment {
   id_payment Int       @id @default(autoincrement())
-  status     String?   @db.VarChar(20)
+  id_order   Int       @unique
+  status     String    @db.VarChar(20)
   created_at DateTime? @default(now()) @db.Timestamp(6)
   updated_at DateTime? @default(now()) @db.Timestamp(6)
-  orders     orders[]
+  orders     orders    @relation(fields: [id_order], references: [id_order], onDelete: NoAction, onUpdate: NoAction, map: "fk_payment_order")
+}
+
+model status {
+  id_status   Int           @id @default(autoincrement())
+  name        String?       @db.VarChar(15)
+  orderstatus orderstatus[]
 }

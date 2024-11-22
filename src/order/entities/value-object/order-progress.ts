@@ -1,6 +1,6 @@
 import { ValueObject } from "./value-object";
 
-export enum OrderStatusValue {
+export enum OrderProgressValue {
     Received = "RECEIVED",
     In_process = "IN_PROCESS",
     Ready = "READY",
@@ -8,4 +8,4 @@ export enum OrderStatusValue {
     Canceled = "CANCELED"
 }
 
-export class OrderStatus extends ValueObject<OrderStatusValue> {}
+export class OrderProgress extends ValueObject<OrderProgressValue> {}
