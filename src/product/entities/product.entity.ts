@@ -1,8 +1,7 @@
-import { Decimal } from "@prisma/client/runtime/library";
-import { ItemType } from "./value-object/item-type";
+import Decimal from "decimal.js";
 
-export class Item {
-    id_item?: number;
+export class Product {
+    id_product?: number;
     name: string;
     description: string;
     type: string; // tem que criar uma tabela pra guardar os tipos aqui

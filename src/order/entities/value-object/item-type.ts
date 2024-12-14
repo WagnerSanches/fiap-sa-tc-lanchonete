@@ -1,9 +1,9 @@
 import { ValueObject } from "./value-object";
 
-export enum ItemTypeValue {
+export enum ProductTypeValue {
     Drink = "DRINK",
     Dessert = "DESSERT",
     Snack = "SNACK"
 }
 
-export class ItemType extends ValueObject<ItemTypeValue> {}
+export class ProductType extends ValueObject<ProductTypeValue> {}

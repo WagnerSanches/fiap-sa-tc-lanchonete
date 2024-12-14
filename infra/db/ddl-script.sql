@@ -1,5 +1,5 @@
-CREATE TABLE Item (
-    id_item SERIAL PRIMARY KEY,      
+CREATE TABLE Product (
+    id_product SERIAL PRIMARY KEY,      
     name VARCHAR(255) NOT NULL,        
     description TEXT,                   
     type VARCHAR(20),                
@@ -12,12 +12,6 @@ CREATE TABLE Client (
     document VARCHAR(11) UNIQUE NOT NULL,
     email VARCHAR(100),
     name VARCHAR(100)
-);
-
-CREATE TABLE Staff (
-    id_staff SERIAL PRIMARY KEY,
-    document VARCHAR(11) UNIQUE NOT NULL,
-    password TEXT NOT NULL
 );
 
 CREATE TABLE Orders (
@@ -51,18 +45,18 @@ CREATE TABLE OrderStatus (
     FOREIGN KEY (id_order) REFERENCES Orders(id_order)
 );
 
-CREATE TABLE OrderItems (
+CREATE TABLE OrderProducts (
     id_order INTEGER NOT NULL,
-    id_item INTEGER NOT NULL,
+    id_product INTEGER NOT NULL,
     quantity INTEGER,
-    PRIMARY KEY (id_order, id_item, quantity),
+    PRIMARY KEY (id_order, id_product, quantity),
     CONSTRAINT fk_order FOREIGN KEY (id_order) REFERENCES Orders(id_order),
-    CONSTRAINT fk_item FOREIGN KEY (id_item) REFERENCES Item(id_item)
+    CONSTRAINT fk_product FOREIGN KEY (id_product) REFERENCES Product(id_product)
 );
 
-INSERT INTO Item (name, description, type, cook_time_min, price) VALUES ('Pizza Margherita', 'Massa artesanal com molho de tomate, manjericão e queijo mozzarella.', 'Pizza', 15, 29.90);
-INSERT INTO Item (name, description, type, cook_time_min, price) VALUES ('Hambúrguer Clássico', 'Pão brioche, hambúrguer 150g, queijo cheddar, alface e tomate.', 'Sanduíche', 10, 19.50);
-INSERT INTO Item (name, description, type, cook_time_min, price) VALUES ('Sushi Especial', '10 peças de sushi com peixe fresco e arroz temperado.', 'Comida Japonesa', 15, 45.00);
+INSERT INTO Product (name, description, type, cook_time_min, price) VALUES ('Pizza Margherita', 'Massa artesanal com molho de tomate, manjericão e queijo mozzarella.', 'Pizza', 15, 29.90);
+INSERT INTO Product (name, description, type, cook_time_min, price) VALUES ('Hambúrguer Clássico', 'Pão brioche, hambúrguer 150g, queijo cheddar, alface e tomate.', 'Sanduíche', 10, 19.50);
+INSERT INTO Product (name, description, type, cook_time_min, price) VALUES ('Sushi Especial', '10 peças de sushi com peixe fresco e arroz temperado.', 'Comida Japonesa', 15, 45.00);
 
 INSERT INTO Status(name) VALUES ('RECEIVED');
 INSERT INTO Status(name) VALUES ('IN_PROCESS');

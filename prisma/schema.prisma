@@ -15,33 +15,13 @@ model client {
   name      String? @db.VarChar(100)
 }
 
-model item {
-  id_item       Int          @id @default(autoincrement())
-  name          String       @db.VarChar(255)
-  description   String?
-  type          String?      @db.VarChar(20)
-  cook_time_min Int
-  price         Decimal?     @db.Decimal(5, 2)
-  orderitems    orderitems[]
-}
-
-model orderitems {
-  id_order Int
-  id_item  Int
-  quantity Int
-  item     item   @relation(fields: [id_item], references: [id_item], onDelete: NoAction, onUpdate: NoAction, map: "fk_item")
-  orders   orders @relation(fields: [id_order], references: [id_order], onDelete: NoAction, onUpdate: NoAction, map: "fk_order")
-
-  @@id([id_order, id_item, quantity])
-}
-
 model orders {
-  id_order         Int          @id @default(autoincrement())
-  document         String?      @db.VarChar(11)
-  price            Decimal?     @db.Decimal(5, 2)
-  preparation_time String?      @db.VarChar(15)
-  created_at       DateTime?    @default(now()) @db.Timestamp(6)
-  items            orderitems[]
+  id_order         Int             @id @default(autoincrement())
+  document         String?         @db.VarChar(11)
+  price            Decimal?        @db.Decimal(5, 2)
+  preparation_time String?         @db.VarChar(15)
+  created_at       DateTime?       @default(now()) @db.Timestamp(6)
+  orderproducts    orderproducts[]
   orderstatus      orderstatus?
   payment          payment?
 }
@@ -70,8 +50,22 @@ model status {
   orderstatus orderstatus[]
 }
 
-model staff {
-  id_staff Int    @id @default(autoincrement())
-  document String @unique @db.VarChar(11)
-  password String
+model orderproducts {
+  id_order   Int
+  id_product Int
+  quantity   Int
+  orders     orders  @relation(fields: [id_order], references: [id_order], onDelete: NoAction, onUpdate: NoAction, map: "fk_order")
+  product    product @relation(fields: [id_product], references: [id_product], onDelete: NoAction, onUpdate: NoAction, map: "fk_product")
+
+  @@id([id_order, id_product, quantity])
+}
+
+model product {
+  id_product    Int             @id @default(autoincrement())
+  name          String          @db.VarChar(255)
+  description   String?
+  type          String?         @db.VarChar(20)
+  cook_time_min Int
+  price         Decimal?        @db.Decimal(5, 2)
+  orderproducts orderproducts[]
 }

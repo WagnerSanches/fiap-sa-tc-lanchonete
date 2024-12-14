@@ -1,7 +1,7 @@
-import { Item } from "../entities/item.entity";
-import { CreateOrderItemDTO } from "./create-order-item.dto";
+import { Product } from "../entities/product.entity";
+import { CreateOrderProductsDTO } from "./create-order-product.dto";
 
 export class CreateOrder {
     document: string;
-    items: CreateOrderItemDTO[];
+    items: CreateOrderProductsDTO[];
 }

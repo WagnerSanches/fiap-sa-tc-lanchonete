@@ -3,7 +3,6 @@ import { Decimal } from "@prisma/client/runtime/library";
 import { Client } from "src/client/entities/client.entity";
 import { ClientRepository } from "src/client/ports/out/client-repository.interface";
 import { PrismaService } from "src/module/prisma";
-import { OrderItems } from "src/order/entities/order-items.entity";
 import { OrderStatus } from "src/order/entities/order-status.entity";
 import { Order } from "src/order/entities/order.entity";
 import { Status } from "src/order/entities/status.entity";
@@ -36,9 +35,9 @@ export class OrderRepositoryPrisma implements OrderRepository {
                 }
             },
             include: {
-                items: {
+                orderproducts: {
                     select: {
-                        item: true,
+                        product: true,
                         quantity: true
                     }
                 },
@@ -60,9 +59,9 @@ export class OrderRepositoryPrisma implements OrderRepository {
                 id_order: id_order,
             },
             include: {
-                items: {
+                orderproducts: {
                     select: {
-                        item: true,
+                        product: true,
                         quantity: true
                     }
                 },
@@ -84,9 +83,9 @@ export class OrderRepositoryPrisma implements OrderRepository {
                 document: order.document,
                 price: order.price,
                 preparation_time: order.preparation_time,
-                items: {
-                    create: order.items.map((order_item) => ({
-                        id_item: order_item.item.id_item,
+                orderproducts: {
+                    create: order.products.map((order_item) => ({
+                        id_product: order_item.product.id_product,
                         quantity: order_item.quantity
                     }
                 )),
@@ -102,9 +101,9 @@ export class OrderRepositoryPrisma implements OrderRepository {
                 }
             },
             include: {
-                items: {
+                orderproducts: {
                     select: {
-                        item: true,
+                        product: true,
                         quantity: true
                     }
                 },
