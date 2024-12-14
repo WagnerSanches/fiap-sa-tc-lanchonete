@@ -14,6 +14,12 @@ CREATE TABLE Client (
     name VARCHAR(100)
 );
 
+CREATE TABLE Staff (
+    id_staff SERIAL PRIMARY KEY,
+    document VARCHAR(11) UNIQUE NOT NULL,
+    password TEXT NOT NULL
+);
+
 CREATE TABLE Orders (
     id_order SERIAL PRIMARY KEY,
     document varchar(11),

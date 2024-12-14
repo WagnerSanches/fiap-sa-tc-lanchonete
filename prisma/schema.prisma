@@ -69,3 +69,9 @@ model status {
   name        String?       @db.VarChar(15)
   orderstatus orderstatus[]
 }
+
+model staff {
+  id_staff Int    @id @default(autoincrement())
+  document String @unique @db.VarChar(11)
+  password String
+}
